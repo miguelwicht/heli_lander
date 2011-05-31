@@ -13,12 +13,15 @@ body {
 	width:100%;
 	height:200px;
 	background-color:grey;
+	overflow-x: hidden;
+	
 }
 
 #content {
 	width:100%;
 	height:500px;
 	background-color:red;
+	overflow:hidden;
 }
 #footer {
 	width:100%;
@@ -29,9 +32,9 @@ body {
 
 
 #heli {
-	width:50px;
-	height:150px;
-	background-color:#F33;
+	width:150px;
+	height:50px;
+	background-color:green;
 	position:absolute;
 	top:10px;
 	left:10px;
@@ -40,7 +43,8 @@ body {
 }
 
 #board{
-	width:100%;
+	width:980px;
 	height: 500px;
+	position: absolute;
 	overflow:hidden;
 }
