@@ -7,6 +7,8 @@ $('#trace').prepend(whatToTrace+"<br/>");
 function main(){
 	
 	var myHeli = $('#heli'); 
+	var myOpponent = $('#opponent');
+	var boardHeight = $('#board').height();
 	var speedY = 0;
 	var gravity = 1;
 	var drag = .98;
@@ -24,31 +26,39 @@ function main(){
 	var keyDown = false;
 	//gravity
 	function startGravity(){
+		
 		var heliTop = myHeli.position().top;
 		var heliLeft = myHeli.position().left;
+		var heliBottom = myHeli.position().top + myHeli.height();
 		
 		/* vertical movement */
 		if (keyUp){
 			if (speedY >= -20) speedY -= gravity;
+			myHeli.css("top", heliTop+speedY);
 		} else {
-			if (speedY <= 20) speedY += gravity	
-		}
-		myHeli.css("top", heliTop+speedY);
-		
+			if (heliBottom < boardHeight){
+				if (speedY <= 20) speedY += gravity;
+				myHeli.css("top", heliTop+speedY);	
+			} else {
+				speedY = 0;
+				myHeli.css("top", boardHeight-myHeli.height()); // sets heli on top of bottom
+			}
+		} //end keyUp
+
 		if (keyDown) {
 			heliTop = myHeli.position().top;
 			myHeli.css("top", heliTop+10);
 		}
-
 		
+
 		/* horizontal movement */
 		if (keyRight){
 			heliLeft = myHeli.position().left; // fix for left+right button bug
-			myHeli.css("left", heliLeft+10)
+			myHeli.css("left", heliLeft+10);
 		}
 		if (keyLeft){
 			heliLeft = myHeli.position().left; // fix for left+right button bug
-			myHeli.css("left", heliLeft-10)
+			myHeli.css("left", heliLeft-10);
 		}
 		
 	
@@ -77,9 +87,25 @@ function main(){
 		if(event.keyCode==key_left) keyLeft = false;	
 	}); //end keyup
 
-	
-	
-	
+
+	/******************** opponent ************************/
+	var direction = 10;
+	function moveOpponent() {
+		var opponentTop = myOpponent.position().top;
+		var opponentBottom = opponentTop + myOpponent.height();
+		
+		if (opponentBottom > boardHeight)
+			direction *= -1;
+
+		if (opponentTop < 0) 
+			direction *= -1;
+			
+		myOpponent.css("top", opponentTop + direction);
+		
+	}
+	// start gravity loop
+	var opponentLoop = setInterval(moveOpponent, 50); 
+	 
 
 
 }
