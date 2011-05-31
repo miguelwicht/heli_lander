@@ -107,5 +107,27 @@ function main(){
 	var opponentLoop = setInterval(moveOpponent, 50); 
 	 
 
+	/********************* platform ***************************/
+	var myPlatform = $('#platform'); 
+	
+	function checkPlatform(_platform, _heli) {
+
+		var _platformTop = _platform.position().top;
+		var _platformLeft = _platform.position().left;
+		var _platformWidth = _platform.width();
+		var _heliBottom = _heli.position().top + _heli.height();
+		var _heliLeft = _heli.position().left;
+		var _heliWidth = _heli.width();
+		
+		if (_platformTop <= _heliBottom  && _platformLeft <= _heliLeft+_heliWidth  && _platformLeft+_platformWidth >= _heliLeft/*+_heliWidth*/){
+			trace("checkPlatform");
+			speedY = 0;
+			_heli.css("top", _platformTop - _heli.height());
+		}
+		
+	}
+
+	var platformLoop = setInterval(function() { checkPlatform(myPlatform, myHeli); }, 50);
+
 
 }
