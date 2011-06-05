@@ -115,14 +115,19 @@ function main(){
 		var _platformTop = _platform.position().top;
 		var _platformLeft = _platform.position().left;
 		var _platformWidth = _platform.width();
+		var _heliTop = _heli.position().top;
 		var _heliBottom = _heli.position().top + _heli.height();
 		var _heliLeft = _heli.position().left;
 		var _heliWidth = _heli.width();
 		
-		if (_platformTop <= _heliBottom  && _platformLeft <= _heliLeft+_heliWidth  && _platformLeft+_platformWidth >= _heliLeft/*+_heliWidth*/){
-			trace("checkPlatform");
+		if (_platformTop <= _heliBottom  
+			&& _platformTop >= _heliTop
+			&& _platformLeft <= _heliLeft+_heliWidth  
+			&& _platformLeft+_platformWidth >= _heliLeft/*+_heliWidth*/){
+				
 			speedY = 0;
 			_heli.css("top", _platformTop - _heli.height());
+			
 		}
 		
 	}
