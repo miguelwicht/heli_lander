@@ -8,7 +8,7 @@ function main(){
 	
 	var myHeli = $('#heli'); 
 	var myOpponent = $('#opponent');
-	var boardHeight = $('#board').height();
+	var boardHeight = $('#board').height()-40;
 	var speedY = 0;
 	var gravity = 1;
 	var drag = .98;
@@ -25,6 +25,12 @@ function main(){
 	var keyLeft = false;
 	var keyDown = false;
 	//gravity
+	var ground = true;
+	var kirbyMove = 0;
+	var	kirbyMovePath = 'url(resources/images/kirby/kirby4.png)';
+	var	kirbyMovePath1 = 'url(resources/images/kirby/kirby4.png)';
+	var	kirbyMovePath2 = 'url(resources/images/kirby/kirby5.png)';
+	
 	function startGravity(){
 		
 		var heliTop = myHeli.position().top;
@@ -39,8 +45,10 @@ function main(){
 			if (heliBottom < boardHeight){
 				if (speedY <= 20) speedY += gravity;
 				myHeli.css("top", heliTop+speedY);	
+				ground = false;
 			} else {
 				speedY = 0;
+				ground = true;
 				myHeli.css("top", boardHeight-myHeli.height()); // sets heli on top of bottom
 			}
 		} //end keyUp
@@ -69,27 +77,65 @@ function main(){
 	var gravityLoop = setInterval(startGravity, 50);
 	
 	
+	function kirbyWalk(){
+		if (ground) {
+			if (kirbyMove == 0) {
+				myHeli.css("background-image", 'url(resources/images/kirby/kirby4.png)');
+				kirbyMove++;
+			}
+			else {
+				myHeli.css("background-image", 'url(resources/images/kirby/kirby5.png)');
+				kirbyMove--;
+			}
+		}
+	}
+	
+	var kirbyWalkLoop = setInterval(kirbyWalk, 300);
+	
 	/******************** key up+down **********************/
 	$(document).keydown(function(event){
 		trace(event.keyCode);
 		trace(speedY+gravity);
 		if(event.keyCode==key_down) keyDown = true;	
-		if(event.keyCode==key_up) keyUp = true;
-		if(event.keyCode==key_right) keyRight = true;
-		if(event.keyCode==key_left) keyLeft = true;	
+		if(event.keyCode==key_up) {
+			keyUp = true;
+			myHeli.css("background-image", 'url(resources/images/kirby/kirby3.png)');
+		}
+		if(event.keyCode==key_right) {
+			keyRight = true;
+			myHeli.removeClass("img_flip");
+	/*		myHeli.css("background-image", kirbyMovePath);
+			if (ground) {
+				if (kirbyMove % 2 === 0) {
+					myHeli.css("background-image", kirbyMovePath);
+					
+					if (kirbyMovePath == kirbyMovePath1) kirbyMovePath = 'url(resources/images/kirby/kirby5.png)';
+					if (kirbyMovePath == kirbyMovePath2) kirbyMovePath = 'url(resources/images/kirby/kirby4.png)';
+				}
+				kirbyMove++;
+			} */
+		}
+		if(event.keyCode==key_left) {
+			keyLeft = true;
+			myHeli.addClass("img_flip");
+		
+		}
 	}); //end keydown
 	
 	$(document).keyup(function(event){
 		trace(event.keyCode+"up");
 		if(event.keyCode==key_down) keyDown = false;	
-		if(event.keyCode==key_up) keyUp = false;
+		if(event.keyCode==key_up) {
+			keyUp = false;
+			myHeli.css("background-image", "url(resources/images/kirby/kirby1.png)");
+		}
 		if(event.keyCode==key_right) keyRight = false;
 		if(event.keyCode==key_left) keyLeft = false;	
 	}); //end keyup
 
 
 	/******************** opponent ************************/
-	var direction = 10;
+	var direction = 2;
 	function moveOpponent() {
 		var opponentTop = myOpponent.position().top;
 		var opponentBottom = opponentTop + myOpponent.height();
@@ -104,8 +150,31 @@ function main(){
 		
 	}
 	// start gravity loop
-	var opponentLoop = setInterval(moveOpponent, 50); 
+	var opponentLoop = setInterval(moveOpponent, 400); 
 	 
+	/******************* tree ****************************/
+	var tree = $('#tree');
+	function treeBlow() {
+		tree.css("background-image", "url(resources/images/kirby/tree2.png)");
+		var t = setTimeout("changeTree()", 400);
+		
+		
+	}
+	
+	function changeTree(){
+		tree.css("background-image", "url(resources/images/kirby/tree1.png)");
+	}
+	
+	var treeBlowLoop = setInterval(treeBlow, 400); 
+
+	var changeTreeLoop = setInterval(changeTree, 800);
+
+
+
+
+
+
+
 
 	/********************* platform ***************************/
 	var myPlatform = $('#platform'); 
@@ -125,7 +194,7 @@ function main(){
 			&& _platformLeft <= _heliLeft+_heliWidth  
 			&& _platformLeft+_platformWidth >= _heliLeft/*+_heliWidth*/){
 				
-			speedY = 0;
+			 speedY = 0; 
 			_heli.css("top", _platformTop - _heli.height());
 			
 		}
@@ -133,6 +202,18 @@ function main(){
 	}
 
 	var platformLoop = setInterval(function() { checkPlatform(myPlatform, myHeli); }, 50);
+	var movingBlock = setInterval(function() { checkPlatform(myOpponent, myHeli); }, 50);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }

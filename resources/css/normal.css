@@ -32,9 +32,11 @@ body {
 
 
 #heli {
-	width:150px;
-	height:50px;
-	background-color:green;
+	width:32px;
+	height:32px;
+/*	background-color:green; */
+	background-image:url('../images/kirby/kirby3.png');
+	background-repeat: no-repeat;
 	position:absolute;
 	top:10px;
 	left:10px;
@@ -42,10 +44,25 @@ body {
 
 }
 
+.img_flip {
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+
+
+
 #opponent {
-	width:50px;
-	height:50px;
-	background-color:orange;
+	width:32px;
+	height:33px;
+	background-image: url('../images/kirby/waddle1.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	
+
 	position:absolute;
 	top:10px;
 	left:300px;
@@ -58,17 +75,29 @@ body {
 	background-color:yellow;
 	position:absolute;
 	top:400px;
-	left:600px;
+	left:200px;
 	z-index:10004;
 }
 
 #water {
 	position:absolute;
-	bottom: 0px;
+	bottom: 0px; 
 	width: 980px;
-	height:75px;
-	background-image: url('../images/water.png');
+	height:40px;
+	background-image:url('../images/kirby/ground.png') ;
+	background-repeat: repeat-x;
+	
 
+}
+
+#tree {
+	position:absolute;
+	bottom: 20px;
+	right:0px;
+	height: 266px;
+	width: 156px;
+	
+	background-image:url('../images/kirby/tree1.png') ;
 }
 
 #board{
@@ -76,4 +105,5 @@ body {
 	height: 500px;
 	position: absolute;
 	overflow:hidden;
+	background-color: #50d0ff;
 }
