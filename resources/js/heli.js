@@ -154,20 +154,24 @@ function main(){
 	 
 	/******************* tree ****************************/
 	var tree = $('#tree');
+	
+	function changeTree() {
+		tree.css("background-image", "url(resources/images/kirby/tree1.png)");
+		console.log("changeTree()");
+	}
+	
 	function treeBlow() {
 		tree.css("background-image", "url(resources/images/kirby/tree2.png)");
-		var t = setTimeout("changeTree()", 400);
-		
+		var t = setTimeout(changeTree, 400);
+		console.log("treeBlow()");
 		
 	}
 	
-	function changeTree(){
-		tree.css("background-image", "url(resources/images/kirby/tree1.png)");
-	}
-	
-	var treeBlowLoop = setInterval(treeBlow, 400); 
 
-	var changeTreeLoop = setInterval(changeTree, 800);
+	
+	var treeBlowLoop = setInterval(treeBlow, 800); 
+
+//	var changeTreeLoop = setInterval(changeTree, 800);
 
 
 
