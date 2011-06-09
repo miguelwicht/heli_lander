@@ -32,11 +32,10 @@ body {
 
 
 #heli {
-	width:32px;
+	width:33px;
 	height:32px;
-/*	background-color:green; */
-	background-image:url('../images/kirby/kirby3.png');
-	background-repeat: no-repeat;
+	background-image:url('../images/kirby/kirbySprite.png');
+/*	background-repeat: repeat-x; */
 	position:absolute;
 	top:10px;
 	left:10px;
@@ -64,7 +63,7 @@ body {
 	
 
 	position:absolute;
-	top:10px;
+	bottom: 32px;
 	left:300px;
 	z-index:10003;
 }
@@ -97,7 +96,7 @@ body {
 	height: 265px;
 	width: 156px;
 	background-image:url('../images/kirby/tree.png') ;
-	background-repeat: repeat-x;
+/*	background-repeat: repeat-x; */
 }
 
 #board{
