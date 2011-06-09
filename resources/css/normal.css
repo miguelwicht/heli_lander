@@ -94,10 +94,10 @@ body {
 	position:absolute;
 	bottom: 20px;
 	right:0px;
-	height: 266px;
+	height: 265px;
 	width: 156px;
-	
-	background-image:url('../images/kirby/tree1.png') ;
+	background-image:url('../images/kirby/tree.png') ;
+	background-repeat: repeat-x;
 }
 
 #board{

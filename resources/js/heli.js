@@ -154,24 +154,38 @@ function main(){
 	 
 	/******************* tree ****************************/
 	var tree = $('#tree');
-	
+	var blow = false;
 	function changeTree() {
-		tree.css("background-image", "url(resources/images/kirby/tree1.png)");
+	//	tree.css("background-image", "url(resources/images/kirby/tree1.png)");
+			tree.css("background-position", "0px 0px");
 		console.log("changeTree()");
+		blow = false
 	}
 	
 	function treeBlow() {
-		tree.css("background-image", "url(resources/images/kirby/tree2.png)");
-		var t = setTimeout(changeTree, 400);
+	//	tree.css("background-image", "url(resources/images/kirby/tree2.png)");
+		
+		tree.css("background-position", "156px 0px");
+		blow = true;
+		var t = setTimeout(changeTree, 800);
 		console.log("treeBlow()");
+		
+		myHeli.css("left", myHeli.position().left-10);
 		
 	}
 	
-
 	
-	var treeBlowLoop = setInterval(treeBlow, 800); 
+	function windMove() {
+		if (blow) {
+			tree.css("background-position", "311px 0px");
+			myHeli.css("left", myHeli.position().left-2);
+		}
+			
+	}
+	
+	var treeBlowLoop = setInterval(treeBlow, 4000); 
 
-//	var changeTreeLoop = setInterval(changeTree, 800);
+	var blowingWind = setInterval(windMove, 8);
 
 
 
