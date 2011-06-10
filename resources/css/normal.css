@@ -31,11 +31,10 @@ body {
 
 
 
-#heli {
+#kirby {
 	width:33px;
 	height:32px;
 	background-image:url('../images/kirby/kirbySprite.png');
-/*	background-repeat: repeat-x; */
 	position:absolute;
 	top:10px;
 	left:10px;
@@ -53,40 +52,25 @@ body {
 }
 
 
-
-#opponent {
+#waddle {
 	width:32px;
 	height:33px;
-	background-image: url('../images/kirby/waddle1.png');
+	background-image: url('../images/kirby/enemy.png');
 	background-repeat: no-repeat;
-	background-size: 100%;
-	
-
+	background-size: 400%;
 	position:absolute;
 	bottom: 32px;
 	left:300px;
 	z-index:10003;
 }
 
-#platform {
-	width:350px;
-	height:50px;
-	background-color:yellow;
-	position:absolute;
-	top:400px;
-	left:200px;
-	z-index:10004;
-}
-
-#water {
+#ground {
 	position:absolute;
 	bottom: 0px; 
 	width: 980px;
 	height:40px;
 	background-image:url('../images/kirby/ground.png') ;
 	background-repeat: repeat-x;
-	
-
 }
 
 #tree {
@@ -99,7 +83,21 @@ body {
 	background-repeat: no-repeat;
 }
 
+#portal {
+	position: absolute;
+	top:50px;
+	right:5px;
+	
+	height:122px;
+	width:122px;
+	background-image:url('../images/kirby/portal.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	
+}
+
 #board{
+	background-image:url('../images/kirby/background.png');
 	width:980px;
 	height: 500px;
 	position: absolute;
