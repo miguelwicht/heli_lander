@@ -1,12 +1,11 @@
 function trace (whatToTrace){
-
 $('#trace').prepend(whatToTrace+"<br/>");
-	
 }
 
 function main(){
 	
-	var myHeli = $('#heli'); 
+//	var myHeli = $('#heli'); 
+	
 	var myOpponent = $('#opponent');
 	_board = $('#board');
 	board = {height:_board.height()-33, width:_board.width()};
@@ -34,60 +33,78 @@ function main(){
 	
 	// Kirby SpriteStates
 	kirby = {
+		id: $('#heli'),
 		energy: 100,
+		energyUse: 2,
 		walk: 0,
+		move: false,
+		stone: false,
 		down:"0px 0px", 
 		up:"-64px 0px", 
 		walk1:"-96px 0px", 
 		walk2:"-130px 0px", 
-		state3:"-128px 0px"
+		state3:"-128px 0px",
+		stoneState:"-162px 0px"
 	};
 
-	
+	console.log(kirby.id);
 	function startGravity(){
-		console.log(kirby.state1);
-		console.log(kirby.state2);
-		console.log(kirby.state3);
-		
-		
-		var heliTop = myHeli.position().top;
-		var heliLeft = myHeli.position().left;
-		var heliBottom = myHeli.position().top + myHeli.height();
+		kirby.top = kirby.id.position().top;
+		kirby.left = kirby.id.position().left;
+		kirby.bottom = kirby.id.position().top + kirby.id.height();
 		
 		/* vertical movement */
 		if (keyUp){
 			if (speedY >= -20 && kirby.energy > 0) speedY -= gravity;
-			myHeli.css("top", heliTop+speedY);
-			kirby.energy -=5;
+				else speedY += gravity;
+				
+				if (kirby.bottom > board.height || kirby.bottom + speedY > board.height) {
+					kirby.id.css("top", board.height-kirby.id.height()); /* prevents kirby from falling through the map */
+					ground = true;
+					if(kirby.energy <= 80) kirby.energy += 20;
+					else kirby.energy = 100;
+				}
+				else {
+					kirby.id.css("top", kirby.top+speedY);
+					kirby.id.css("background-position", kirby.up);
+					kirby.energy -= kirby.energyUse;
+				}
 		} else {
-			if (heliBottom < boardHeight){
+			if (kirby.bottom < boardHeight){
 				if (speedY <= 20) speedY += gravity;
-				myHeli.css("top", heliTop+speedY);	
+				kirby.id.css("top", kirby.top+speedY);	
 				ground = false;
 			} else {
 				speedY = 0;
 				ground = true;
-				myHeli.css("top", board.height-myHeli.height()); // sets heli on top of bottom
+				kirby.id.css("top", board.height-kirby.id.height()); // sets heli on top of bottom
 				if(kirby.energy <= 80) kirby.energy += 20;
 				else kirby.energy = 100;
 			}
 		} //end keyUp
 
-		if (keyDown) {
-			heliTop = myHeli.position().top;
-			myHeli.css("top", heliTop+10);
+		if (keyDown) {						/*************** kirby stone *****************/
+			kirby.top = kirby.id.position().top;
+			kirby.id.css("top", kirby.top+10);
+			kirby.stone = true;
+			kirby.id.css("background-position", kirby.stoneState);
 		}
+		
+		/***************** reset boundaries *********************/
+	//	if (kirby.bottom > board.height) kirby.id.css("bottom", board.height);
 		
 
 		/* horizontal movement */
 		if (keyRight){
-			heliLeft = myHeli.position().left; // fix for left+right button bug
-			myHeli.css("left", heliLeft+10);
+			kirby.left = kirby.id.position().left; // fix for left+right button bug
+			kirby.id.css("left", kirby.left+10);
+			kirby.move = true;
 		}
 		if (keyLeft){
-			heliLeft = myHeli.position().left; // fix for left+right button bug
-			myHeli.css("left", heliLeft-10);
-		}
+			kirby.left = kirby.id.position().left; // fix for left+right button bug
+			kirby.id.css("left", kirby.left-10);
+			kirby.move = true;
+		} 
 		
 	
 
@@ -98,16 +115,16 @@ function main(){
 	
 	
 	function kirbyWalk(){
-		if (ground) {
+		if (kirby.move && ground) {
 			if (kirby.walk == 0) {
-				myHeli.css("background-position", kirby.walk1);
+				kirby.id.css("background-position", kirby.walk1);
 				kirby.walk++;
 			}
 			else {
-				myHeli.css("background-position", kirby.walk2);
+				kirby.id.css("background-position", kirby.walk2);
 				kirby.walk--;
 			}
-		}
+		} else if(kirby.move == false && ground) kirby.id.css("background-position", kirby.walk1);
 	}
 	
 	var kirbyWalkLoop = setInterval(kirbyWalk, 300);
@@ -119,28 +136,37 @@ function main(){
 		if(event.keyCode==key_down) keyDown = true;	
 		if(event.keyCode==key_up) {
 			keyUp = true;
-			myHeli.css("background-position", kirby.up);
+			
 		}
 		if(event.keyCode==key_right) {
 			keyRight = true;
-			myHeli.removeClass("img_flip");
+			kirby.id.removeClass("img_flip");
 		}
 		if(event.keyCode==key_left) {
 			keyLeft = true;
-			myHeli.addClass("img_flip");
+			kirby.id.addClass("img_flip");
 		
 		}
 	}); //end keydown
 	
 	$(document).keyup(function(event){
 		trace(event.keyCode+"up");
-		if(event.keyCode==key_down) keyDown = false;	
+		if(event.keyCode==key_down) {
+			keyDown = false;
+			kirby.stone = false;
+		}	
 		if(event.keyCode==key_up) {
 			keyUp = false;
-			myHeli.css("background-position", kirby.down);
+			kirby.id.css("background-position", kirby.down);
 		}
-		if(event.keyCode==key_right) keyRight = false;
-		if(event.keyCode==key_left) keyLeft = false;	
+		if(event.keyCode==key_right) {
+			keyRight = false;
+			kirby.move = false;
+		}
+		if(event.keyCode==key_left) {
+			keyLeft = false;	
+			kirby.move = false;
+		}
 	}); //end keyup
 
 
@@ -218,6 +244,7 @@ function main(){
 			_heli.css("top", _platformTop - _heli.height());
 			
 		}
+	
 		
 	}
 	 
@@ -230,7 +257,7 @@ function main(){
 	}
 	
 	function treeBreathOut() {
-		treeRef.css("background-position", tree.state2);
+		treeRef.css("background-position", tree.state3);
 		console.log("breathOut");
 		blow = true;
 		var z = setTimeout(treeBreathOutEnd, 2000);
@@ -241,16 +268,16 @@ function main(){
 		treeRef.css("background-position", tree.state1);
 	}
 	function treeBlow() {
-		treeRef.css("background-position", tree.state3);
+		treeRef.css("background-position", tree.state2);
 		console.log("nothing");
 		var z = setTimeout(treeBreath, 800);
 	}
 	
 	
 	function windMove() {
-		if (blow) {
+		if (blow && kirby.stone == false) {
 			console.log("blow");
-			myHeli.css("left", myHeli.position().left-2);
+			kirby.id.css("left", kirby.id.position().left-2);
 		}
 			
 	}
@@ -287,12 +314,16 @@ function main(){
 	}
 
 //	var platformLoop = setInterval(function() { checkPlatform(myPlatform, myHeli); }, 50);
-	var movingBlock = setInterval(function() { checkPlatform(myOpponent, myHeli); }, 50);
+	var movingBlock = setInterval(function() { checkPlatform(myOpponent, kirby.id); }, 50);
 	
 	
 	
+	function keepInBoundaries(){
+		if (kirby.bottom > board.height) myHeli.css("bottom", board.height);
+	}
 	
-	
+
+	var keepInBoundariesLoop = setInterval(keepInBoundaries, 20);
 	
 	
 	
