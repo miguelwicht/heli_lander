@@ -96,7 +96,7 @@ body {
 	height: 265px;
 	width: 156px;
 	background-image:url('../images/kirby/tree.png') ;
-/*	background-repeat: repeat-x; */
+	background-repeat: no-repeat;
 }
 
 #board{

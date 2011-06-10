@@ -12,7 +12,7 @@ function main(){
 	board = {height:_board.height()-33, width:_board.width()};
 	var boardHeight = $('#board').height()-40;
 	var boardWidth = $('#board').width()-156;
-	tree = {state1:"0px 0px", state2:"156px 0px", state3: "312px 0px"};
+	tree = {state1:"0px 0px", state2:"-156px 0px", state3: "-312px 0px"};
 	var speedY = 0;
 	var gravity = 1;
 	var drag = .98;
@@ -30,8 +30,12 @@ function main(){
 	var keyDown = false;
 	//gravity
 	var ground = true;
-	var kirbyMove = 0;
+//	var kirbyMove = 0;
+	
+	// Kirby SpriteStates
 	kirby = {
+		energy: 100,
+		walk: 0,
 		down:"0px 0px", 
 		up:"-64px 0px", 
 		walk1:"-96px 0px", 
@@ -52,8 +56,9 @@ function main(){
 		
 		/* vertical movement */
 		if (keyUp){
-			if (speedY >= -20) speedY -= gravity;
+			if (speedY >= -20 && kirby.energy > 0) speedY -= gravity;
 			myHeli.css("top", heliTop+speedY);
+			kirby.energy -=5;
 		} else {
 			if (heliBottom < boardHeight){
 				if (speedY <= 20) speedY += gravity;
@@ -63,6 +68,8 @@ function main(){
 				speedY = 0;
 				ground = true;
 				myHeli.css("top", board.height-myHeli.height()); // sets heli on top of bottom
+				if(kirby.energy <= 80) kirby.energy += 20;
+				else kirby.energy = 100;
 			}
 		} //end keyUp
 
@@ -92,13 +99,13 @@ function main(){
 	
 	function kirbyWalk(){
 		if (ground) {
-			if (kirbyMove == 0) {
+			if (kirby.walk == 0) {
 				myHeli.css("background-position", kirby.walk1);
-				kirbyMove++;
+				kirby.walk++;
 			}
 			else {
 				myHeli.css("background-position", kirby.walk2);
-				kirbyMove--;
+				kirby.walk--;
 			}
 		}
 	}
